@@ -1,0 +1,730 @@
+﻿
+
+
+@{
+    Layout = null;
+    var instructorObject = ViewBag.Instructor;
+
+    var T_Learner = ViewBag.TotalLearner;
+    var T_ActiveLearner = ViewBag.TotalActiveLearner;
+    var T_InsCourse = ViewBag.TotalInsCourse;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LMS : InstructorPanel</title>
+    @*Bootstrap css*@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <style>
+        .company-logo {
+            display: inline-block;
+        }
+
+            .company-logo img {
+                width: 100px;
+                height: auto;
+                display: block;
+            }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #00000013;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background:#6EACDA;
+            padding: 20px 10px;
+            transition: width 300ms;
+        }
+
+            nav.close {
+                width: 73px;
+            }
+
+            nav .logo_name {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+                nav .logo_name i {
+                    font-size: 28px;
+                    color: #fff;
+                }
+
+                nav .logo_name .logo_name {
+                    font-size: 22px;
+                    color: #fff;
+                    margin-left: 10px;
+                    font-weight: 600;
+                }
+
+            nav ul {
+                list-style: none;
+                padding-left: 0;
+            }
+
+                nav ul li {
+                    position: relative;
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+
+                    nav ul li a {
+                        display: flex;
+                        align-items: center;
+                        color: #fff;
+                        font-size: 16px;
+                        font-weight: 500;
+                        text-decoration: none;
+                        padding: 10px;
+                        border-radius: 5px;
+                        transition: background 300ms;
+                    }
+
+                        nav ul li a i {
+                            font-size: 20px;
+                        }
+
+                        nav ul li a .link-name {
+                            margin-left: 10px;
+                        }
+
+                        nav ul li a:hover {
+                            background: #fff;
+                            color: #1d1b31;
+                        }
+
+        .dashboard {
+            position: relative;
+            left: 250px;
+            width: calc(100% - 250px);
+            padding: 10px;
+            transition: left 300ms, width 300ms;
+        }
+
+            .dashboard .top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 20px;
+            }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard {
+            padding: 5px;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+            .logout button {
+                background: #C63C51;
+                color: #fff;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background 300ms;
+            }
+
+                .logout button:hover {
+                    background: #e60000;
+                }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #00000013;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile .link-name {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .dashboard .dash-content .boxes {
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard .dash-content .box {
+            flex: 1;
+            min-width: calc(25% - 15px);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+            .dashboard .dash-content .box i {
+                font-size: 40px;
+                color: #1d1b31;
+                margin-bottom: 10px;
+            }
+
+            .dashboard .dash-content .box .text {
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 5px;
+            }
+
+            .dashboard .dash-content .box .number {
+                font-size: 24px;
+                font-weight: 600;
+            }
+
+        .dashboard .activity {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .dashboard .activity .title {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            .dashboard .activity .activity-data {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+                .dashboard .activity .activity-data .data {
+                    flex: 1;
+                    min-width: 200px;
+                }
+
+                    .dashboard .activity .activity-data .data .data-title {
+                        font-size: 16px;
+                        font-weight: 500;
+                        margin-bottom: 10px;
+                    }
+
+                    .dashboard .activity .activity-data .data .data-list {
+                        font-size: 14px;
+                        margin-bottom: 5px;
+                    }
+    </style>
+
+</head>
+<body>
+
+
+
+
+    <nav>
+        <div class="logo_name">
+           @* <i class="uil uil-estate"></i>*@
+            <span class="logo_name">Dashboard</span>
+        </div>
+        <ul>
+            <li>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#InstructorView">
+                    <i class="fa-solid fa-eye"></i>
+                    <span class="link-name"> View Profile</span>
+                </a>
+            </li>
+
+            <li>
+
+                <a href="#" data-bs-toggle="modal" data-bs-target="#InstructorEdit">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <span class="link-name"> Edit Profile</span>
+                </a>
+            </li>
+
+            <li>
+
+                <a href="#" data-bs-toggle="modal" data-bs-target="#InstructorAddCourse">
+                    <i class="fa-solid fa-folder-plus"></i>
+                    <span class="link-name"> Add Course</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="@Url.Action("InstructorCourses", "Instructor")">
+                    <i class="uil uil-book"></i>
+                    <span class="link-name">Courses</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="@Url.Action("InstructorLearner", "Instructor")">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="link-name">Learners</span>
+                </a>
+            </li>
+        </ul>
+        <div class="logout">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#InstructorLogout">
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="company-logo">
+                <img src="~/HomeBanner/lms_logo-removebg-preview.png" />
+            </i>
+
+            <div class="profile">
+                <span class="link-name mx-4">@instructorObject.InstructorName</span>
+
+                <img src="~/HomeBanner/blank-profile-picture-973460_1280.png" alt="Profile Picture" />
+            </div>
+        </div>
+
+        <div class="dash-content">
+            <div class="boxes">
+
+                <div class="box">
+                    <i class="uil uil-user-plus"></i>
+                   
+                    <span class="text">Total Learners</span>
+                    <span class="number">@T_Learner</span>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                    <span class="text">Total Active Learners</span>
+                    <span class="number">@T_ActiveLearner</span>
+                </div>
+                <div class="box">
+                    <i class="uil uil-book"></i>
+                    <span class="text"> Courses</span>
+                    <span class="number">@T_InsCourse</span>
+                </div>
+
+            </div>
+
+            <div class="activity">
+                <div class="activity-data">
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+    @*Instructor view*@
+    <div class="modal fade" id="InstructorView" tabindex="-1" aria-labelledby="InstructorViewLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="InstructorName" class="form-label">Name:</label>
+                        <p id="InstructorName" class="form-text">@instructorObject.InstructorName</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="InstructorEmail" class="form-label">Email:</label>
+                        <p id="InstructorEmail" class="form-text">@instructorObject.InstructorEmail</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="InstructorPassword" class="form-label">Password:</label>
+                        <p id="InstructorPassword" class="form-text">@instructorObject.InstructorPassword</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    @*Instructor edit modal*@
+
+    <div class="modal fade" id="InstructorEdit" tabindex="-1" aria-labelledby="InstructorEditLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Admin Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="closebtn" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="InstructorEditForm" method="post" action="@Url.Action("UpdateInstructor","Instructor")">
+                        <div class="mb-3">
+                            <label for="InstructorNameEdit" class="form-label">Name:</label>
+                            <input type="text" id="InstructorNameEdit" class="form-control" name="InstructorNameEdit" value="@instructorObject.InstructorName" autocomplete="off" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="InstructorEmailEdit" class="form-label">Email:</label>
+                            <input type="email" id="InstructorEmailEdit" class="form-control" name="InstructorEmailEdit" value="@instructorObject.InstructorEmail" autocomplete="off" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="InstructorPasswordEdit" class="form-label">Password:</label>
+                            <input type="text" id="InstructorPasswordEdit" class="form-control" name="InstructorPasswordEdit" value="@instructorObject.InstructorPassword" autocomplete="off" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" form="InstructorEditForm" id="InstructorUpdateBtn" class="btn btn-warning">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Instructor logout modal*@
+
+    <div class="modal fade" id="InstructorLogout" tabindex="-1" aria-labelledby="InstructorLogoutLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6> Sure To Logout ?</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger" id="logoutButton">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*instructor edit msg modal*@
+
+    <div class="modal fade" id="InstructorEditMsgModal" tabindex="-1" aria-labelledby="InstructorEditMsgModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="InstructorEditMsgModalLabel">Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="closebtn" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="InstructorEditMsg"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*Instructor add new course modal*@
+    <!-- Add Course Modal -->
+    <div class="modal fade" id="InstructorAddCourse" tabindex="-1" aria-labelledby="InstructorAddCourseLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AddCourseModalLabel">Add New Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="closebtn" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="InstructorAddCourseForm" method="post" action="@Url.Action("AddInsCourse","Instructor")">
+                        <div class="mb-3">
+                            <label for="InstructorAddCourseTitle" class="form-label">Course Name:</label>
+                            <input type="text" id="InstructorAddCourseTitle" class="form-control" name="CourseName" required autocomplete="off" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="InstructorAddCourseTitle" class="form-label">Course Code:</label>
+                            <input type="text" id="InstructorAddCourseCode" class="form-control" name="CourseCode" required autocomplete="off" />
+                        </div>
+
+                        <div id="modulesContainer">
+                            <div class="module-entry mb-3">
+                                <label class="form-label">Module 1:</label>
+                                <input type="text" class="form-control mb-2" name="ModuleTitle_1" placeholder="Module Title" required autocomplete="off" />
+                                <input type="url" class="form-control mb-2" name="ModuleURL_1" placeholder="YouTube URL" required autocomplete="off" />
+                                <button type="button" class="btn btn-danger remove-module-button mt-2">Remove Module</button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="addModuleButton">+ Add Module</button>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" form="InstructorAddCourseForm" class="btn btn-warning" id="InstructorCourseAdd">Add Course</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Instructor add course Message Modal*@
+    <div class="modal fade" id="InsLearMsgModal" tabindex="-1" aria-labelledby="InsLearMsgModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="InsLearModalLabel">Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="closebtn" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @*jquery  cdn*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    @*jquery validate cdn*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js" integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    @*bootstrap js*@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+    let moduleCount = 1;
+
+    function addModule() {
+        moduleCount++;
+        const moduleEntry = $(`
+            <div class="module-entry mb-3">
+                <label class="form-label">Module ${moduleCount}:</label>
+                <input type="text" class="form-control mb-2" name="ModuleTitle_${moduleCount}" placeholder="Module Title" required />
+                <input type="url" class="form-control mb-2" name="ModuleURL_${moduleCount}" placeholder="YouTube URL" required />
+                <button type="button" class="btn btn-danger remove-module-button mt-2">Remove Module</button>
+            </div>
+        `);
+
+        $('#modulesContainer').append(moduleEntry);
+        moduleEntry.find('.remove-module-button').on('click', function () {
+            moduleEntry.remove();
+        });
+    }
+
+    $('#addModuleButton').on('click', addModule);
+    $('.remove-module-button').on('click', function () {
+        $(this).closest('.module-entry').remove();
+    });
+
+   $("#InstructorCourseAdd").on('click', function (e) {
+    e.preventDefault();
+
+    const courseName = $("#InstructorAddCourseTitle").val();
+    const instructorId = '@instructorObject.InstructorId'; // Ensure this is properly populated
+    const coursecode = $("#InstructorAddCourseCode").val();
+    const courses = {};
+
+    $('#modulesContainer .module-entry').each(function () {
+        const moduleTitle = $(this).find('input[name^="ModuleTitle"]').val();
+        const moduleURL = $(this).find('input[name^="ModuleURL"]').val();
+        if (moduleTitle && moduleURL) {
+            courses[moduleTitle] = moduleURL;
+        }
+    });
+
+    $.ajax({
+        url: $("#InstructorAddCourseForm").attr("action"),
+        type: $("#InstructorAddCourseForm").attr("method"),
+        data: JSON.stringify({
+            courseName: courseName,
+            instructorId: instructorId,
+            courses: courses,
+            coursecode: coursecode
+        }),
+        contentType: 'application/json',
+        success: function (response) {
+            $("#InsLearMsgModal .modal-body").text(response.message);
+            $("#InstructorAddCourse").modal("hide");
+            $('#InstructorAddCourse').on('hidden.bs.modal', function () {
+                $("#InsLearMsgModal").modal("show");
+
+            });
+        },
+        error: function (response) {
+            const errorMessage = response.responseJSON ? response.responseJSON.message : "An error occurred";
+            $("#InsLearMsgModal .modal-body").text(errorMessage);
+            $("#InstructorAddCourse").modal("hide");
+            $('#InstructorAddCourse').on('hidden.bs.modal', function () {
+                $("#InsLearMsgModal").modal("show");
+
+            });
+        }
+    });
+   });
+
+/*/////////////////////////////////////////////////////////////////////////////////////*/
+
+    $("#InstructorUpdateBtn").on('click', function (e) {
+        e.preventDefault();
+        if ($("#InstructorEditForm").valid()) {
+            var formData = new FormData($("#InstructorEditForm")[0]);
+
+            $.ajax({
+                url: $("#InstructorEditForm").attr("action"),
+                type: $("#InstructorEditForm").attr("method"),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    showEditMessage(response.message);
+                },
+                error: function (response) {
+                    var errorMessage = response.responseJSON ? response.responseJSON.message : "An error occurred";
+                    showEditMessage(errorMessage);
+                }
+            });
+        }
+    });
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+    $("#InstructorEditForm").validate({
+        errorClass: "error",
+        rules: {
+            InstructorNameEdit: {
+                required: true,
+                minlength: 3,
+                maxlength: 20
+            },
+            InstructorEmailEdit: {
+                required: true,
+                email: true
+            },
+            InstructorPasswordEdit: {
+                required: true,
+                minlength: 6
+            }
+        },
+        messages: {
+            InstructorNameEdit: {
+                required: "Name field cannot be empty",
+                minlength: "Name must be at least 3 characters",
+                maxlength: "Name must not exceed 20 characters"
+            },
+            InstructorEmailEdit: {
+                required: "Email field cannot be empty",
+                email: "Please enter a valid email"
+            },
+            InstructorPasswordEdit: {
+                required: "Password field cannot be empty",
+                minlength: "Password must be at least 6 characters"
+            }
+        }
+    });
+
+
+
+    $("#logoutButton").on('click', function () {
+        $.ajax({
+            url: '@Url.Action("Instructorlogout", "Instructor")',
+            type: 'POST',
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = '@Url.Action("Welcome", "Home")';
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("An error occurred: " + error);
+            }
+        });
+    });
+
+    function showEditMessage(message) {
+        $("#InstructorEditMsgModal #InstructorEditMsg").text(message);
+        $("#InstructorEdit").modal("hide");
+        $("#InstructorEditMsgModal").modal("show");
+            }
+
+
+
+        });
+
+        /*////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+        /*=====================================================================================*/
+        document.querySelector(".uil-bars").addEventListener("click", () => {
+            document.querySelector("nav").classList.toggle("close");
+            document.querySelector(".dashboard").classList.toggle("close");
+        });
+
+        /*=====================================================================================*/
+
+
+
+        const body = document.querySelector("body");
+        const sidebar = document.querySelector("nav");
+        const sidebarToggle = document.querySelector(".top .uil-bars");
+
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            body.classList.toggle("sidebar-close");
+        });
+
+        // Example function to dynamically load data
+        function loadDashboardData() {
+            // Placeholder code for loading data dynamically (e.g., via AJAX)
+            console.log("Loading dashboard data...");
+        }
+
+        // Call the function to load data
+        loadDashboardData();
+
+
+
+    </script>
+
+
+</body>
+</html>

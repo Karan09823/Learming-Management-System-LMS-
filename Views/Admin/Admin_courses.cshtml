@@ -1,0 +1,557 @@
+﻿@{
+    Layout = null;
+    var adminModel = ViewBag.AdminModel as LMS.Models.AdminModel;
+    var identityList = ViewBag.IdentityList as List<LMS.Models.Identity>;
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LMS : Admin_courses</title>
+    @*Bootstrap css*@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        .company-logo {
+            display: inline-block;
+        }
+
+            .company-logo img {
+                width: 100px;
+                height: auto;
+                display: block;
+            }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #00000013;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #2F3645;
+            padding: 20px 10px;
+            transition: width 300ms;
+        }
+
+            nav.close {
+                width: 73px;
+            }
+
+            nav .logo_name {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+                nav .logo_name i {
+                    font-size: 28px;
+                    color: #fff;
+                }
+
+                nav .logo_name .logo_name {
+                    font-size: 22px;
+                    color: #fff;
+                    margin-left: 10px;
+                    font-weight: 600;
+                }
+
+            nav ul {
+                list-style: none;
+                padding-left: 0;
+            }
+
+                nav ul li {
+                    position: relative;
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+
+                    nav ul li a {
+                        display: flex;
+                        align-items: center;
+                        color: #fff;
+                        font-size: 16px;
+                        font-weight: 500;
+                        text-decoration: none;
+                        padding: 10px;
+                        border-radius: 5px;
+                        transition: background 300ms;
+                    }
+
+                        nav ul li a i {
+                            font-size: 20px;
+                        }
+
+                        nav ul li a .link-name {
+                            margin-left: 10px;
+                        }
+
+                        nav ul li a:hover {
+                            background: #fff;
+                            color: #1d1b31;
+                        }
+
+        .dashboard {
+            position: relative;
+            left: 250px;
+            width: calc(100% - 250px);
+            padding: 10px;
+            transition: left 300ms, width 300ms;
+        }
+
+            .dashboard .top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 20px;
+            }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard {
+            padding: 5px;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+            .logout button {
+                background: #C63C51;
+                color: #fff;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background 300ms;
+            }
+
+                .logout button:hover {
+                    background: #e60000;
+                }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #00000013;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile .link-name {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .dashboard .dash-content .boxes {
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard .dash-content .box {
+            flex: 1;
+            min-width: calc(25% - 15px);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+            .dashboard .dash-content .box i {
+                font-size: 40px;
+                color: #1d1b31;
+                margin-bottom: 10px;
+            }
+
+            .dashboard .dash-content .box .text {
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 5px;
+            }
+
+            .dashboard .dash-content .box .number {
+                font-size: 24px;
+                font-weight: 600;
+            }
+
+        .dashboard .activity {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .dashboard .activity .title {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            .dashboard .activity .activity-data {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+                .dashboard .activity .activity-data .data {
+                    flex: 1;
+                    min-width: 200px;
+                }
+
+                    .dashboard .activity .activity-data .data .data-title {
+                        font-size: 16px;
+                        font-weight: 500;
+                        margin-bottom: 10px;
+                    }
+
+                    .dashboard .activity .activity-data .data .data-list {
+                        font-size: 14px;
+                        margin-bottom: 5px;
+                    }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo_name">
+           
+            <span class="logo_name">Dashboard</span>
+        </div>
+        <ul>
+            <li>
+                <a href="@Url.Action("AdminPanel", "Admin")">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Home</span>
+                </a>
+            </li>
+
+
+        </ul>
+
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="company-logo">
+                <img src="~/HomeBanner/lms_logo-removebg-preview.png" />
+            </i>
+
+            <div class="profile">
+                <span class="link-name mx-4">@adminModel.Admin_Name</span>
+                <img src="~/HomeBanner/blank-profile-picture-973460_1280.png" />
+            </div>
+        </div>
+
+        <!-- Dropdown for identities -->
+        <div class="container mt-5">
+            <div class="dropdown">
+                <button class="btn btn dropdown-toggle" type="button" id="identityDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #2F3645; color: white;">
+                    Select Course To View It
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="identityDropdown">
+                    @if (identityList != null && identityList.Any())
+                    {
+                        foreach (var identity in identityList)
+                        {
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="showModules('@identity.CourseName', '@identity.CourseCode')">
+                                    @identity.CourseName - @identity.CourseCode
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="card mt-5">
+            <div class="card-header" style="background-color: #2F3645; color: white;">Courses List</div>
+            <div class="card-body">
+                <table class="table" id="course-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Module_Id</th>
+                            <th scope="col">Module_Name</th>
+                            <th scope="col">Module_Video</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="moduleTableBody">
+                        <!-- Module rows will be inserted here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Adminpanel course Edit Modal -->
+    <div class="modal fade" id="AdminCourPanelModal" tabindex="-1" aria-labelledby="AdminCourPanelModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AdminCourPanelModalLabel">Edit Modules</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="closebtn" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="ModuleEdit" method="post" action="">
+                        <div class="mb-3">
+                            <label for="ModuleNameEdit" class="form-label">Module_Name:</label>
+                            <input type="text" id="ModuleNameEdit" name="ModuleName" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="ModuleLinkEdit" class="form-label">Module_Link:</label>
+                            <input type="text" id="ModuleLinkEdit" name="ModuleLink" class="form-control" autocomplete="off" />
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning" id="ModuleUpdate">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Admin Course Delete Modal -->
+    <div class="modal fade" id="AdminCourseDelete" tabindex="-1" aria-labelledby="AdminCourseDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Are You Sure?</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div class="modal fade" id="msgModal" tabindex="-1" aria-labelledby="msgModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="msginfo"></h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    @*bootstrap js*@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+    <script>
+           function showModules(courseName, courseCode) {
+            var tableBody = document.getElementById('moduleTableBody');
+
+            // Clear previous table rows
+            tableBody.innerHTML = '';
+
+            $.ajax({
+                url: '@Url.Action("AdminCourseModuleList", "Admin")',
+                type: 'GET',
+                data: { courseCode: courseCode, courseName: courseName },
+                success: function (data) {
+                    if (!data || !data.modules) {
+                        console.error('No modules found');
+                        return;
+                    }
+
+                    var modules = data.modules;
+
+                    // Populate table with modules
+                    modules.forEach(function (module) {
+                        var row = document.createElement('tr');
+
+                        var moduleIdCell = document.createElement('td');
+                        moduleIdCell.textContent = module.ModuleId;
+                        row.appendChild(moduleIdCell);
+
+                        var moduleNameCell = document.createElement('td');
+                        moduleNameCell.textContent = module.ModuleName;
+                        row.appendChild(moduleNameCell);
+
+                        var moduleVideoCell = document.createElement('td');
+                        var videoLink = document.createElement('a');
+                        videoLink.href = module.ModuleLink;
+                        videoLink.textContent = 'Watch Video';
+                        videoLink.target = '_blank'; // Open in new tab
+                        moduleVideoCell.appendChild(videoLink);
+                        row.appendChild(moduleVideoCell);
+
+                        var actionsCell = document.createElement('td');
+                        var editButton = document.createElement('button');
+                        editButton.textContent = 'Edit';
+                        editButton.className = 'btn btn-warning btn-sm';
+                        editButton.onclick = function () {
+                            // Assuming you have a function to handle view button clicks
+
+                            $('#ModuleNameEdit').val(module.ModuleName);
+                            $('#ModuleLinkEdit').val(module.ModuleLink);
+                            $('#ModuleEdit').data('moduleId', module.ModuleId);
+                            $('#AdminCourPanelModal').modal('show');
+
+
+
+                        };
+                        actionsCell.appendChild(editButton);
+
+                        var deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.className = 'btn btn-danger btn-sm ms-2';
+                        deleteButton.setAttribute('data-bs-toggle', 'modal');
+                        deleteButton.setAttribute('data-bs-target', '#AdminCourseDelete');
+                        deleteButton.setAttribute('data-module-id', module.ModuleId); // Set moduleId for deletion
+                        actionsCell.appendChild(deleteButton);
+
+                        row.appendChild(actionsCell);
+
+                        tableBody.appendChild(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching modules:', error);
+                }
+            });
+        }
+
+        // Example function for handling module video view
+        function showModuleVideo(moduleId) {
+            $.ajax({
+                url: '@Url.Action("GetModuleLink", "Admin")',
+                type: 'GET',
+                data: { moduleId: moduleId },
+                success: function (data) {
+                    if (data && data.moduleLink) {
+                        var playlistVideo = document.getElementById('playlistVideo');
+                        playlistVideo.src = data.moduleLink;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching module link:', error);
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+             //module update
+            $('#ModuleUpdate').click(function () {
+                var moduleId = $('#ModuleEdit').data('moduleId');
+                var moduleName = $('#ModuleNameEdit').val();
+                var moduleLink = $('#ModuleLinkEdit').val();
+
+                $.ajax({
+                    url: '@Url.Action("EditModuleAdminPanel", "Admin")',
+                    type: 'POST',
+                    data: { moduleId: moduleId, moduleName: moduleName, moduleLink: moduleLink },
+                    success: function (response) {
+                        $('#AdminCourPanelModal').modal('hide');
+                        $('#msgModal #msginfo').text(response.message);
+                        $('#msgModal').modal('show');
+                        if (response.success) {
+                            showModules(); // Refresh module list if needed
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        $('#msgModal #msginfo').text(error);
+                        $('#msgModal').modal('show');
+                    }
+                });
+            });
+
+         // Handle Delete Module
+            $('#AdminCourseDelete').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var moduleId = button.data('module-id'); // Extract info from data-* attributes
+                var modal = $(this);
+
+                // Set up the click handler for the delete button within the modal
+                modal.find('.btn-danger').off('click').on('click', function () {
+                    $.ajax({
+                        url: '@Url.Action("DeleteModule", "Admin")',
+                        type: 'POST',
+                        data: { moduleId: moduleId },
+                        success: function (response) {
+                            if (response.success) {
+                                // Remove the deleted module row from the table
+                                $('#moduleTableBody').find('tr').filter(function () {
+                                    return $(this).find('td').eq(0).text() === moduleId.toString();
+                                }).remove();
+                            }
+                            $('#AdminCourseDelete').modal('hide');
+                            $('#msgModal #msginfo').text(response.message);
+                            $('#msgModal').modal('show');
+                        },
+                        error: function (xhr, status, error) {
+                            $('#AdminCourseDelete').modal('hide');
+                            $('#msgModal #msginfo').text("Error: " + error);
+                            $('#msgModal').modal('show');
+                        }
+                    });
+                });
+            });
+
+
+        });
+    </script>
+
+
+
+</body>
+</html>

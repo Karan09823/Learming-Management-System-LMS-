@@ -1,0 +1,540 @@
+﻿@model List<LMS.Models.InstructorModel>
+@{
+    Layout = null;
+    var adminModel = ViewBag.AdminModel;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS : Admin_Instructor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <style>
+        .company-logo {
+            display: inline-block;
+        }
+
+            .company-logo img {
+                width: 100px;
+                height: auto;
+                display: block;
+            }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #00000013;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #2F3645;
+            padding: 20px 10px;
+            transition: width 300ms;
+        }
+
+            nav.close {
+                width: 73px;
+            }
+
+            nav .logo_name {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+                nav .logo_name i {
+                    font-size: 28px;
+                    color: #fff;
+                }
+
+                nav .logo_name .logo_name {
+                    font-size: 22px;
+                    color: #fff;
+                    margin-left: 10px;
+                    font-weight: 600;
+                }
+
+            nav ul {
+                list-style: none;
+                padding-left: 0;
+            }
+
+                nav ul li {
+                    position: relative;
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+
+                    nav ul li a {
+                        display: flex;
+                        align-items: center;
+                        color: #fff;
+                        font-size: 16px;
+                        font-weight: 500;
+                        text-decoration: none;
+                        padding: 10px;
+                        border-radius: 5px;
+                        transition: background 300ms;
+                    }
+
+                        nav ul li a i {
+                            font-size: 20px;
+                        }
+
+                        nav ul li a .link-name {
+                            margin-left: 10px;
+                        }
+
+                        nav ul li a:hover {
+                            background: #fff;
+                            color: #1d1b31;
+                        }
+
+        .dashboard {
+            position: relative;
+            left: 250px;
+            width: calc(100% - 250px);
+            padding: 10px;
+            transition: left 300ms, width 300ms;
+        }
+
+            .dashboard .top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 20px;
+            }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard {
+            padding: 5px;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+            .logout button {
+                background: #C63C51;
+                color: #fff;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background 300ms;
+            }
+
+                .logout button:hover {
+                    background: #e60000;
+                }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #00000013;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile .link-name {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .dashboard .dash-content .boxes {
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard .dash-content .box {
+            flex: 1;
+            min-width: calc(25% - 15px);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+            .dashboard .dash-content .box i {
+                font-size: 40px;
+                color: #1d1b31;
+                margin-bottom: 10px;
+            }
+
+            .dashboard .dash-content .box .text {
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 5px;
+            }
+
+            .dashboard .dash-content .box .number {
+                font-size: 24px;
+                font-weight: 600;
+            }
+
+        .dashboard .activity {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .dashboard .activity .title {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            .dashboard .activity .activity-data {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+                .dashboard .activity .activity-data .data {
+                    flex: 1;
+                    min-width: 200px;
+                }
+
+                    .dashboard .activity .activity-data .data .data-title {
+                        font-size: 16px;
+                        font-weight: 500;
+                        margin-bottom: 10px;
+                    }
+
+                    .dashboard .activity .activity-data .data .data-list {
+                        font-size: 14px;
+                        margin-bottom: 5px;
+                    }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo_name">
+           
+            <span class="logo_name">Dashboard</span>
+        </div>
+        <ul>
+            <li>
+                <a href="@Url.Action("AdminPanel", "Admin")">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Home</span>
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="company-logo">
+                <img src="~/HomeBanner/lms_logo-removebg-preview.png" />
+            </i>
+
+            <div class="profile">
+                <span class="link-name mx-5"> @adminModel.Admin_Name</span>
+                <img src="~/HomeBanner/blank-profile-picture-973460_1280.png" />
+            </div>
+        </div>
+
+        <div class="card mt-5">
+            <div class="card-header" style="background-color: #2F3645; color: white;">Instructors List</div>
+            <div class="card-body">
+                <table class="table" id="instructor-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Instructor_Id</th>
+                            <th scope="col">Instructor_Name</th>
+
+                            <th scope="col">Instructor_Mail</th>
+                            <th scope="col">Instructor_Password</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var instructor in Model)
+                        {
+                            <tr>
+                                <th>@instructor.InstructorId</th>
+                                <td>@instructor.InstructorName</td>
+
+                                <td>@instructor.InstructorEmail</td>
+                                <td>@instructor.InstructorPassword</td>
+                                <td>
+                                    <button class="btn btn-warning"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#AdminInstructorEdit"
+                                            data-id="@instructor.InstructorId"
+                                            data-name="@instructor.InstructorName"
+                                            data-email="@instructor.InstructorEmail"
+                                            data-password="@instructor.InstructorPassword">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#AdminInstructorDelete"
+                                            data-email="@instructor.InstructorEmail"
+                                            data-id="@instructor.InstructorId">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    @* Admin Instructor Edit Modal *@
+    <div class="modal fade" id="AdminInstructorEdit" tabindex="-1" aria-labelledby="AdminInstructorEditLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AdminInstructorEditLabel">Edit Instructor Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="AdminInstructorEditForm" method="post" action="@Url.Action("AdminInstructUpdate", "Admin")">
+                        <input type="hidden" id="OriginalInstructorId" name="OriginalInstructorId" />
+                        <input type="hidden" id="OriginalInstructorEmail" name="OriginalInstructorEmail" />
+                        <input type="hidden" id="OriginalInstructorPassword" name="OriginalInstructorPassword" />
+                        <div class="mb-3">
+                            <label for="AdminInstructorNameEdit" class="form-label">Name:</label>
+                            <input type="text" id="AdminInstructorNameEdit" class="form-control" name="AdminInstructName" autocomplete="off" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="AdminInstructorEmailEdit" class="form-label">Email:</label>
+                            <input type="email" id="AdminInstructorEmailEdit" class="form-control" name="AdminInstructEmail" autocomplete="off" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="AdminInstructorPasswordEdit" class="form-label">Password:</label>
+                            <input type="password" id="AdminInstructorPasswordEdit" class="form-control" name="AdminInstructPassword" autocomplete="off" required />
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-warning" id="adminInsbtnUpdate">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Admin Instructor Delete Modal *@
+    <div class="modal fade" id="AdminInstructorDelete" tabindex="-1" aria-labelledby="AdminInstructorDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AdminInstructorDeleteLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="closebtn" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="AdminInstructorDeleteForm" method="post" action="@Url.Action("DeleteAdminInstructController", "Admin")">
+                        <input type="hidden" id="InstructorEmailDelete" name="InstructorEmail" />
+                        <input type="hidden" id="InstructorIdDelete" name="InstructorId" />
+                        <p>Are you sure you want to delete this instructor?</p>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-danger" id="adminInsbtnDel">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Ins Message Modal -->
+    <div class="modal fade" id="AdminInsMsgModal" tabindex="-1" aria-labelledby="AdminInsMsgModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AdminInsMsgModalLabel">Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="closebtn" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Success/Failure message will be injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#AdminInstructorEdit').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var name = button.data('name');
+                var email = button.data('email');
+                var password = button.data('password');
+
+                var modal = $(this);
+                modal.find('#OriginalInstructorId').val(id);
+                modal.find('#AdminInstructorNameEdit').val(name);
+                modal.find('#AdminInstructorEmailEdit').val(email);
+                modal.find('#AdminInstructorPasswordEdit').val(password);
+                modal.find('#OriginalInstructorEmail').val(email);
+                modal.find('#OriginalInstructorPassword').val(password);
+            });
+
+            // Handle the update form submission
+            $("#AdminInstructorEditForm").submit(function (e) {
+                e.preventDefault();
+
+                var formData = new FormData($(this)[0]);
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: $(this).attr("method"),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $("#AdminInstructorEdit").modal("hide");
+                        $("#AdminInsMsgModal .modal-body").text(response.message);
+                        $("#AdminInsMsgModal").modal("show");
+                    },
+                    error: function (response) {
+                        var errorMessage = response.responseJSON ? response.responseJSON.message : "An error occurred";
+                        $("#AdminInstructorEdit").modal("hide");
+                        $("#AdminInsMsgModal .modal-body").text(errorMessage);
+                        $("#AdminInsMsgModal").modal("show");
+                    }
+                });
+            });
+
+            // Populate delete modal with instructor data
+            $('#AdminInstructorDelete').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var email = button.data('email');
+
+                var modal = $(this);
+                modal.find('#InstructorIdDelete').val(id);
+                modal.find('#InstructorEmailDelete').val(email);
+            });
+
+            // Handle the delete button click
+            $("#AdminInstructorDeleteForm").submit(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: $(this).attr("method"),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        $("#AdminInstructorDelete").modal("hide");
+                        $("#AdminInsMsgModal .modal-body").text(response.message);
+                        $("#AdminInsMsgModal").modal("show");
+                    },
+                    error: function (response) {
+                        var errorMessage = response.responseJSON ? response.responseJSON.message : "An error occurred";
+                        $("#AdminInstructorDelete").modal("hide");
+                        $("#AdminInsMsgModal .modal-body").text(errorMessage);
+                        $("#AdminInsMsgModal").modal("show");
+                    }
+                });
+            });
+
+            // Refresh the page on modal close
+            $("#AdminInsMsgModal").on('hidden.bs.modal', function () {
+                window.location.reload();
+            });
+
+            // Admin Instructor form validation
+            $("#AdminInstructorEditForm").validate({
+                errorClass: "error",
+                rules: {
+                    AdminInstructName: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 30
+                    },
+                    AdminInstructEmail: {
+                        required: true,
+                        email: true
+                    },
+                    AdminInstructPassword: {
+                        required: true,
+                        minlength: 6
+                    }
+                },
+                messages: {
+                    AdminInstructName: {
+                        required: "Name field cannot be empty",
+                        minlength: "Name must be at least 3 characters long",
+                        maxlength: "Name must not exceed 30 characters"
+                    },
+                    AdminInstructEmail: {
+                        required: "Email field cannot be empty",
+                        email: "Please enter a valid email"
+                    },
+                    AdminInstructPassword: {
+                        required: "Password field cannot be empty",
+                        minlength: "Password must be at least 6 characters long"
+                    }
+                }
+            });
+
+            // Refresh the page on modal close
+            $(".btn-close").click(function () {
+                window.location.reload();
+            });
+
+            // Sidebar toggle
+            const body = document.querySelector("body");
+            const sidebar = document.querySelector("nav");
+            const sidebarToggle = document.querySelector(".top .uil-bars");
+
+            sidebarToggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                body.classList.toggle("sidebar-close");
+            });
+        });
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,632 @@
+﻿@{
+    Layout = null;
+    var adminModel = ViewBag.AdminModel;
+    var TInstructor = ViewBag.TotalInstructorDb;
+    var TLearner = ViewBag.LearnerDb;
+    var TCourse = ViewBag.CoursesDb;
+
+    var MRecord = ViewBag.MasterRecord as List<LMS.Models.MasterRecord>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LMS : AdminPanel</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <style>
+        .company-logo {
+            display: inline-block;
+        }
+
+            .company-logo img {
+                width: 100px;
+                height: auto;
+                display: block;
+            }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #00000013;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #2F3645;
+            padding: 20px 10px;
+            transition: width 300ms;
+        }
+
+            nav.close {
+                width: 73px;
+            }
+
+            nav .logo_name {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+                nav .logo_name i {
+                    font-size: 28px;
+                    color: #fff;
+                }
+
+                nav .logo_name .logo_name {
+                    font-size: 22px;
+                    color: #fff;
+                    margin-left: 10px;
+                    font-weight: 600;
+                }
+
+            nav ul {
+                list-style: none;
+                padding-left: 0;
+            }
+
+                nav ul li {
+                    position: relative;
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+
+                    nav ul li a {
+                        display: flex;
+                        align-items: center;
+                        color: #fff;
+                        font-size: 16px;
+                        font-weight: 500;
+                        text-decoration: none;
+                        padding: 10px;
+                        border-radius: 5px;
+                        transition: background 300ms;
+                    }
+
+                        nav ul li a i {
+                            font-size: 20px;
+                        }
+
+                        nav ul li a .link-name {
+                            margin-left: 10px;
+                        }
+
+                        nav ul li a:hover {
+                            background: #fff;
+                            color: #1d1b31;
+                        }
+
+        .dashboard {
+            position: relative;
+            left: 250px;
+            width: calc(100% - 250px);
+            padding: 10px;
+            transition: left 300ms, width 300ms;
+        }
+
+            .dashboard .top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 20px;
+            }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard {
+            padding: 5px;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+            .logout button {
+                background: #C63C51;
+                color: #fff;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background 300ms;
+            }
+
+                .logout button:hover {
+                    background: #e60000;
+                }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #00000013;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile .link-name {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .dashboard .dash-content .boxes {
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard .dash-content .box {
+            flex: 1;
+            min-width: calc(25% - 15px);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+            .dashboard .dash-content .box i {
+                font-size: 40px;
+                color: #1d1b31;
+                margin-bottom: 10px;
+            }
+
+            .dashboard .dash-content .box .text {
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 5px;
+            }
+
+            .dashboard .dash-content .box .number {
+                font-size: 24px;
+                font-weight: 600;
+            }
+
+        .dashboard .activity {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .dashboard .activity .title {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            .dashboard .activity .activity-data {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+                .dashboard .activity .activity-data .data {
+                    flex: 1;
+                    min-width: 200px;
+                }
+
+                    .dashboard .activity .activity-data .data .data-title {
+                        font-size: 16px;
+                        font-weight: 500;
+                        margin-bottom: 10px;
+                    }
+
+                    .dashboard .activity .activity-data .data .data-list {
+                        font-size: 14px;
+                        margin-bottom: 5px;
+                    }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo_name">
+        
+            <span class="logo_name">Dashboard</span>
+        </div>
+        <ul>
+
+            <li>
+                <a href="@Url.Action("Admin_courses", "Admin")">
+                    <i class="uil uil-book"></i>
+                    <span class="link-name">Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Admin_Instructor", "Admin")">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Instructors</span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Admin_Learner", "Admin")">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="link-name">Learners</span>
+                </a>
+            </li>
+
+            <li>
+
+                <a href="#" class="" data-bs-toggle="modal" data-bs-target="#AdminViewModal">
+                    <i class="fa-solid fa-eye"></i>
+                    <span class="link-name"> View Profile</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="" data-bs-toggle="modal" data-bs-target="#AdminEditModal">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <span class="link-name">Edit Profile</span>
+                </a>
+            </li>
+
+
+        </ul>
+        <div class="logout">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#AdminLogout">
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="company-logo">
+                <img src="~/HomeBanner/lms_logo-removebg-preview.png" />
+            </i>
+
+            <div class="profile">
+                <span class="link-name mx-4">@adminModel.Admin_Name</span>
+
+                <img src="~/HomeBanner/blank-profile-picture-973460_1280.png" alt="Profile Picture" />
+            </div>
+        </div>
+
+        <div class="dash-content">
+            <div class="boxes">
+                <div class="box">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="text">Total Instructors</span>
+                    <span class="number">@TInstructor</span>
+                </div>
+                <div class="box">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="text">Total Learners</span>
+                    <span class="number">@TLearner</span>
+                </div>
+                <div class="box">
+                    <i class="uil uil-book"></i>
+                    <span class="text"> Courses</span>
+                    <span class="number">@TCourse</span>
+                </div>
+
+            </div>
+
+            <div class="activity">
+                <div class="title">Recent Activity</div>
+                <div class="activity-data">
+
+                </div>
+                <div class="card mt-5">
+                    <div class="card-header" style="background-color: #2F3645; color: white;">Master Record</div>
+                    <div class="card-body">
+                        @if (MRecord == null || !MRecord.Any())
+                        {
+                            <p>No recent activities available.</p>
+                        }
+                        else
+                        {
+                            <table class="table" id="activity-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Instructor ID</th>
+                                        <th scope="col">Instructor Name</th>
+                                        <th scope="col">Learner ID</th>
+                                        <th scope="col">Learner Name</th>
+                                        <th scope="col">Course Code</th>
+                                        <th scope="col">Course Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var record in MRecord)
+                                    {
+                                        <tr>
+                                            <td>@record.InstructorId</td>
+                                            <td>@record.InstructorName</td>
+                                            <td>@record.LearnerId</td>
+                                            <td>@record.LearnerName</td>
+                                            <td>@record.Coursecode</td>
+                                            <td>@record.Coursename</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+
+        <!-- Admin View Modal -->
+        <div class="modal fade" id="AdminViewModal" tabindex="-1" aria-labelledby="AdminViewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AdminViewModalLabel">Admin Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="adminName" class="form-label">Name:</label>
+                            <p id="adminName" class="form-text">@adminModel.Admin_Name</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminEmail" class="form-label">Email:</label>
+                            <p id="adminEmail" class="form-text">@adminModel.Admin_Email</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminPassword" class="form-label">Password:</label>
+                            <p id="adminPassword" class="form-text">@adminModel.Admin_password</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Edit Modal -->
+        <div class="modal fade" id="AdminEditModal" tabindex="-1" aria-labelledby="AdminEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AdminEditModalLabel">Edit Admin Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" id="closebtn" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="adminEditForm" method="post" action="@Url.Action("UpdateAdmin", "Admin")">
+                            <div class="mb-3">
+                                <label for="AdminNameEdit" class="form-label">Name:</label>
+                                <input type="text" id="AdminNameEdit" name="AdminName" class="form-control" autocomplete="off" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="AdminEmailEdit" class="form-label">Email:</label>
+                                <input type="email" id="AdminEmailEdit" name="AdminEmail" class="form-control" autocomplete="off" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="AdminPasswordEdit" class="form-label">Password:</label>
+                                <div class="input-group">
+                                    <input type="password" id="AdminPasswordEdit" name="AdminPassword" class="form-control" autocomplete="off" />
+                                    @*<button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>*@
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" form="adminEditForm" class="btn btn-warning" id="AdminEditModalUpdate">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Logout Modal -->
+        <div class="modal fade" id="AdminLogout" tabindex="-1" aria-labelledby="AdminLogoutLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="AdminLogoutLabel">Sure to Logout?</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="logoutButton">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Admin Edit Message Modal -->
+        <div class="modal fade" id="AdminEditMsgModal" tabindex="-1" aria-labelledby="AdminEditMsgModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AdminEditMsgModalLabel">Message</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="AdminEditMsg"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+
+
+        <script>
+
+         $(document).ready(function () {
+            // Populate Edit Modal with current admin details
+            $('#AdminEditModal').on('show.bs.modal', function () {
+                var modal = $(this);
+                modal.find('#AdminNameEdit').val('@adminModel.Admin_Name');
+                modal.find('#AdminEmailEdit').val('@adminModel.Admin_Email');
+                modal.find('#AdminPasswordEdit').val('@adminModel.Admin_password');
+            });
+
+            // Handle Admin Edit Form submission
+            $("#AdminEditModalUpdate").click(function (e) {
+                e.preventDefault();
+
+                if ($("#adminEditForm").valid()) {
+                    var formData = new FormData($("#adminEditForm")[0]);
+
+                    $.ajax({
+                        url: $("#adminEditForm").attr("action"),
+                        type: $("#adminEditForm").attr("method"),
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            showEditMessage(response.message);
+                        },
+                        error: function (response) {
+                            var errorMessage = response.responseJSON ? response.responseJSON.message : "An error occurred";
+                            showEditMessage(errorMessage);
+                        }
+                    });
+                }
+            });
+
+            // Admin Edit Form validation
+            $("#adminEditForm").validate({
+                errorClass: "error",
+                rules: {
+                    AdminName: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 20
+                    },
+                    AdminEmail: {
+                        required: true,
+                        email: true
+                    },
+                    AdminPassword: {
+                        required: true,
+                        minlength: 6
+                    }
+                },
+                messages: {
+                    AdminName: {
+                        required: "Name field cannot be empty",
+                        minlength: "Name must be at least 3 characters",
+                        maxlength: "Name must not exceed 20 characters"
+                    },
+                    AdminEmail: {
+                        required: "Email field cannot be empty",
+                        email: "Please enter a valid email"
+                    },
+                    AdminPassword: {
+                        required: "Password field cannot be empty",
+                        minlength: "Password must be at least 6 characters"
+                    }
+                }
+            });
+
+            // Reset and reload Admin Edit Form
+            $("#closebtn").click(function () {
+                $("#adminEditForm")[0].reset();
+                window.location.reload();
+            });
+
+            // Handle Admin Logout
+            $("#logoutButton").click(function () {
+                $.ajax({
+                    url: '@Url.Action("Adminlogout", "Admin")',
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            // Redirect to login page
+                            window.location.href = '@Url.Action("Welcome", "Home")'; // Adjust to your login route
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("An error occurred: " + error);
+                    }
+                });
+            });
+
+            // Display message after Admin Edit form submission
+            function showEditMessage(message) {
+                $("#AdminEditMsgModal #AdminEditMsg").text(message);
+                $("#AdminEditModal").modal("hide");
+                $("#AdminEditMsgModal").modal("show");
+            }
+
+
+        /*=====================================================================================*/
+             document.querySelector(".uil-bars").addEventListener("click", () => {
+                 document.querySelector("nav").classList.toggle("close");
+                 document.querySelector(".dashboard").classList.toggle("close");
+             });
+
+         /*=====================================================================================*/
+
+
+
+             const body = document.querySelector("body");
+             const sidebar = document.querySelector("nav");
+             const sidebarToggle = document.querySelector(".top .uil-bars");
+
+             sidebarToggle.addEventListener("click", () => {
+                 sidebar.classList.toggle("close");
+                 body.classList.toggle("sidebar-close");
+             });
+
+             // Example function to dynamically load data
+             function loadDashboardData() {
+                 // Placeholder code for loading data dynamically (e.g., via AJAX)
+                 console.log("Loading dashboard data...");
+             }
+
+             // Call the function to load data
+             loadDashboardData();
+
+
+
+
+
+
+
+
+
+        });
+
+        </script>
+    </body>
+</html>
